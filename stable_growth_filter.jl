@@ -5,7 +5,7 @@ using NLsolve
 # state transitions 
 function update_states_H0(log_x_t,r,K, d)
     x_t = exp(log_x_t)
-    x_t1 = r*x_t*exp(rand(d,1)[1])+ (1-r)*K
+    x_t1 = (r*x_t+ (1-r)*K)*exp(rand(d,1)[1])
     return log(x_t1)
 end
 
@@ -22,7 +22,7 @@ log_normal_sigma(mu, sigma) = (exp(sigma^2)-1)*exp(2*mu+sigma^2)
 function update_moments(log_x_hat,sigma,sigma_nu,r,K)
     mu_prime = log(r) + log_x_hat
     sigma_prime = sigma + sigma_nu
-    E = log_normal_mean(mu_prime, sigma_prime) + (1-r)*K
+    E = log_normal_mean(mu_prime+ (1-r)*K, sigma_prime) 
     V = log_normal_sigma(mu_prime, sigma_prime)
     return E, V
 end 
